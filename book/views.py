@@ -120,7 +120,27 @@ class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
         IsAuthenticated,
         IsAdminOrReadOnly
     ]
-
+# კონკრეტული ველებით ფილტრაცია
+    filterset_fields = [
+        "author",
+        "published_year",
+        "user",
+    ]
+# ტექსტით ძებნა
+    search_fields = [
+        "title",
+        "author",
+        "description",
+    ]
+# დალაგება
+    ordering_fields = [
+        "title",
+        "published_year",
+        "created_at",
+    ]
+    ordering = ["-created_at"]
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
     @extend_schema(
         tags=["Books"],
         summary="Get one book"

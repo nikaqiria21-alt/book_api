@@ -113,3 +113,26 @@ class BookAPITest(APITestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_filter_books_by_year(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.get("/api/books/?published_year=2024")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["count"], 1)
+
+
+    def test_search_books(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.get("/api/books/?search=Python")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["count"], 1)
+
+
+    def test_pagination(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.get("/api/books/?page=1")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("results", response.data)
