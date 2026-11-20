@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.core.validators import MinValueValidator, MaxValueValidator
 class Book(models.Model):
 
     user = models.ForeignKey(
@@ -15,7 +15,7 @@ class Book(models.Model):
 
     description = models.TextField()
 
-    published_year = models.PositiveIntegerField()
+    published_year = models.PositiveIntegerField(validators=[MinValueValidator(1000),MaxValueValidator(3000)])
 
     created_at = models.DateTimeField(auto_now_add=True)
 
